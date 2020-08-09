@@ -14,6 +14,7 @@ import {
   Button,
   ButtonGroup,
   Message,
+  MessageBox,
   Col,
   Row,
   Table,
@@ -54,7 +55,8 @@ const components = [
   OptionGroup,
   Button,
   ButtonGroup,
-  Message,
+  [Message, '$message'],
+  [MessageBox, '$msgbox'],
   Row,
   Col,
   Table,
@@ -85,7 +87,13 @@ const install = function install (Vue) {
   if (install.installed) return
 
   components.forEach((component) => {
-    Vue.component(component.name, component)
+    if (component instanceof Array) {
+      const [Comp, $compName] = component
+      Vue.prototype[$compName] = Comp
+      Vue.component(Comp.name, Comp)
+    } else {
+      Vue.component(component.name, component)
+    }
   })
 }
 
