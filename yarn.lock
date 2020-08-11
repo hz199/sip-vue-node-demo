@@ -7433,6 +7433,11 @@ simple-swizzle@^0.2.2:
   dependencies:
     is-arrayish "^0.3.1"
 
+sip.js@^0.17.1:
+  version "0.17.1"
+  resolved "https://registry.npm.taobao.org/sip.js/download/sip.js-0.17.1.tgz#82d6d45939d1360726020c31731d16f0feb29cda"
+  integrity sha1-gtbUWTnRNgcmAgwxcx0W8P6ynNo=
+
 slash@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
