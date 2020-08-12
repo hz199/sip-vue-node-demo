@@ -35,8 +35,8 @@
 </template>
 
 <script>
-// import JsSIP from 'jssip'
-import { UserAgent, Inviter, SessionState, Web } from 'sip.js'
+import JsSIP from 'jssip'
+// import { UserAgent, Inviter, SessionState, Web } from 'sip.js'
 
 export default {
   name: 'Home',
@@ -74,19 +74,16 @@ export default {
     },
     // 初始化jssip参数
     async initSipParams () {
+      var socket = new JsSIP.WebSocketInterface(this.formData.ws_servers);
+      var configuration = {
+        sockets  : [ socket ],
+        uri      : this.formData.uri,
+        password : this.formData.password
+      };
 
+     this.SIPUAInstance = new JsSIP.UA(configuration)
 
-
-      // console.log(this.formData.uri)
-      // console.log(UserAgent.makeURI(this.formData.uri))
-      // this.SIPUAInstance = new UserAgent({
-      //   uri: UserAgent.makeURI(this.formData.uri),
-      //   transportOptions: {
-      //     server: this.formData.ws_servers
-      //   },
-      // })
-
-      // await this.SIPUAInstance.start()
+     await this.SIPUAInstance.start()
     },
     callPhone () {
       if (!this.formData.callPhoneUri) {
@@ -97,42 +94,29 @@ export default {
         return
       }
 
-      // 设置被呼叫的人员
-      const targetCallPhone = UserAgent.makeURI(this.formData.callPhoneUri)
-      console.log(targetCallPhone)
-      if (!targetCallPhone) {
-        this.$message({
-          type: 'error',
-          message: '呼叫人员不存在'
-        })
-        return
-      }
-
-      // 创建用户代理客户端以建立会话
-      const inviter = new Inviter(this.SIPUAInstance, targetCallPhone, {
-        sessionDescriptionHandlerOptions: {
-          constraints: { audio: true, video: false }
+      // Register callbacks to desired call events
+      const eventHandlers = {
+        'progress': function() {
+          console.log('call is in progress')
+        },
+        'failed': function(e) {
+          console.log('call failed with cause: '+ e.data.cause)
+        },
+        'ended': function(e) {
+          console.log('call ended with cause: '+ e.data.cause)
+        },
+        'confirmed': function() {
+          console.log('call confirmed')
         }
-      })
+      };
 
-      inviter.stateChange.addListener((newState) => {
-        switch (newState) {
-          case SessionState.Establishing:
-            // Session is establishing
-            break;
-          case SessionState.Established:
-            // Session has been established
-            break;
-          case SessionState.Terminated:
-            // Session has terminated
-            break;
-          default:
-            break;
-        }
-      });
+      const options = {
+        'eventHandlers'    : eventHandlers,
+        'mediaConstraints' : { 'audio': true, 'video': false }
+      };
 
-      inviter.invite()
-
+      const session = this.SIPUAInstance.call(this.formData.callPhoneUri, options)
+      console.log(session)
     },
   },
   mounted () {
