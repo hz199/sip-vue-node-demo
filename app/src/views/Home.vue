@@ -35,8 +35,7 @@
 </template>
 
 <script>
-import JsSIP from 'jssip'
-// import { UserAgent, Inviter, SessionState, Web } from 'sip.js'
+import { Sipphone } from './utils/sipphone'
 
 export default {
   name: 'Home',
@@ -58,7 +57,7 @@ export default {
       // jssip UA 实例
       SIPUAInstance: null,
       // session instance
-      sessionInstance: null
+      UAInstance: null
     }
   },
   components: {
@@ -74,16 +73,48 @@ export default {
     },
     // 初始化jssip参数
     async initSipParams () {
-      var socket = new JsSIP.WebSocketInterface(this.formData.ws_servers);
-      var configuration = {
-        sockets  : [ socket ],
-        uri      : this.formData.uri,
-        password : this.formData.password
-      };
+      const servers = [{
+        protocol: 'ws',
+        server: '182.92.0.247',
+        port: 5066
+      }]
 
-     this.SIPUAInstance = new JsSIP.UA(configuration)
+      const account = {
+        name: 'TEST USER',
+        no: '1000', // 账号 caller
+        pwd: 'freeswitchXOR1234VOip#WOXES'
+      }
 
-     await this.SIPUAInstance.start()
+      const MD = {
+        remoteAudio: document.querySelector('#remoteAudio'),
+      }
+
+      this.SIPUAInstance = new Sipphone(account, servers)
+      this.UAInstance = this.SIPUAInstance.init(MD)
+
+      this.SIPUAInstance.on('callIn', (session) => {
+        // triggerd when someone is calling you
+        console.log(session)
+      })
+      this.SIPUAInstance.on('callOut', () => {
+        // triggerd when you call out
+      })
+      this.SIPUAInstance.on('callOutBack', () => {
+        // triggerd when you call out and internal callback
+      })
+      // call someone whos number is 1235
+      this.SIPUAInstance.on('accepted', ({ response, cause }) => {
+        // triggerd when your call is accepted by peer
+        console.log(response, cause)
+      })
+      this.SIPUAInstance.on('hungup', ({ response, cause }) => {
+        // triggerd when call is finished
+        console.log(response, cause)
+      })
+      this.SIPUAInstance.on('error', (error) => {
+        console.log(error)
+        // triggerd when error is occur while calling
+      })
     },
     callPhone () {
       if (!this.formData.callPhoneUri) {
@@ -94,29 +125,7 @@ export default {
         return
       }
 
-      // Register callbacks to desired call events
-      const eventHandlers = {
-        'progress': function() {
-          console.log('call is in progress')
-        },
-        'failed': function(e) {
-          console.log('call failed with cause: '+ e.data.cause)
-        },
-        'ended': function(e) {
-          console.log('call ended with cause: '+ e.data.cause)
-        },
-        'confirmed': function() {
-          console.log('call confirmed')
-        }
-      };
-
-      const options = {
-        'eventHandlers'    : eventHandlers,
-        'mediaConstraints' : { 'audio': true, 'video': false }
-      };
-
-      const session = this.SIPUAInstance.call(this.formData.callPhoneUri, options)
-      console.log(session)
+      this.UAInstance.invite(this.formData.callPhoneUri)
     },
   },
   mounted () {
