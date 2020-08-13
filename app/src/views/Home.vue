@@ -86,35 +86,35 @@ export default {
       }
 
       const MD = {
-        remoteAudio: document.querySelector('#remoteAudio'),
+        remoteAudio: document.getElementById('remoteAudio'),
       }
 
       this.SIPUAInstance = new Sipphone(account, servers)
       this.UAInstance = this.SIPUAInstance.init(MD)
 
-      // this.SIPUAInstance.on('callIn', (session) => {
-      //   // triggerd when someone is calling you
-      //   console.log(session)
-      // })
-      // this.SIPUAInstance.on('callOut', () => {
-      //   // triggerd when you call out
-      // })
-      // this.SIPUAInstance.on('callOutBack', () => {
-      //   // triggerd when you call out and internal callback
-      // })
-      // // call someone whos number is 1235
-      // this.SIPUAInstance.on('accepted', ({ response, cause }) => {
-      //   // triggerd when your call is accepted by peer
-      //   console.log(response, cause)
-      // })
-      // this.SIPUAInstance.on('hungup', ({ response, cause }) => {
-      //   // triggerd when call is finished
-      //   console.log(response, cause)
-      // })
-      // this.SIPUAInstance.on('error', (error) => {
-      //   console.log(error)
-      //   // triggerd when error is occur while calling
-      // })
+      this.SIPUAInstance.on('callIn', (session) => {
+        // triggerd when someone is calling you
+        console.log(session)
+      })
+      this.SIPUAInstance.on('callOut', () => {
+        // triggerd when you call out
+      })
+      this.SIPUAInstance.on('callOutBack', () => {
+        // triggerd when you call out and internal callback
+      })
+      // call someone whos number is 1235
+      this.SIPUAInstance.on('accepted', ({ response, cause }) => {
+        // triggerd when your call is accepted by peer
+        console.log(response, cause)
+      })
+      this.SIPUAInstance.on('hungup', ({ response, cause }) => {
+        // triggerd when call is finished
+        console.log(response, cause)
+      })
+      this.SIPUAInstance.on('error', (error) => {
+        console.log(error)
+        // triggerd when error is occur while calling
+      })
     },
     callPhone () {
       if (!this.formData.callPhoneUri) {

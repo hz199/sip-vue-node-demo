@@ -1,13 +1,10 @@
 
 
 class EventEmitter {
- 
   constructor() {
     this.events = new Map()
     this.maxListeners = this.getMaxListeners()
     this.defaultMaxListeners = 10
-
-    console.log('EventEmitter')
   }
 
   /**
@@ -39,7 +36,9 @@ class EventEmitter {
    * en: EventName, cb: Callback Function
    */
   on(en, cb) {
-    console.log(this.events, en, 111)
+    if (!this.events) {
+      this.events = new Map()
+    }
     if(this.events.has(en)) {
       const cbArray = this.events.get(en)
       cbArray.push(cb)

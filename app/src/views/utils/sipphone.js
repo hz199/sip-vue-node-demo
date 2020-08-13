@@ -1,5 +1,5 @@
 
-import SIP from 'sip.js'
+import SIP, { UA } from 'sip.js'
 import { EventEmitter } from "./EventEmitter";
 
 class Sipphone {
@@ -23,7 +23,7 @@ class Sipphone {
     };
     this.videoTrack = [];
     this.callback = {};
-    this.mediaDom;
+    this.mediaDom = {};
     this.modifiersParams = { ptime: '20', capturerate: '24000', bitrate: '30000' };
     this.EventEmitter = new EventEmitter()
     this.on = this.EventEmitter.on
@@ -36,7 +36,7 @@ class Sipphone {
   // initial sip instance
   init(md) {
     const config = this.sipConfig
-    this.SipUA = new SIP.UA(config)
+    this.SipUA = new UA(config)
     this.bindSipUAEvents()
     this.initialMediaDom(md)
     return this.SipUA
@@ -480,7 +480,7 @@ class Sipphone {
         connector: (level, category, label, content) => `${level} ${category} ${label} ${content}`,
         level: 'debug' // "debug", "log", "warn", "error"
       },
-      rel100: SIP.C.supported.SUPPORTED
+      // rel100: SIP.C.supported.SUPPORTED
     }
     return config
   }
