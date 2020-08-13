@@ -2724,15 +2724,9 @@ crypto-browserify@^3.11.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
-<<<<<<< HEAD
-crypto-js@^3.1.9-1:
-  version "3.3.0"
-  resolved "https://registry.npm.taobao.org/crypto-js/download/crypto-js-3.3.0.tgz#846dd1cce2f68aacfa156c8578f926a609b7976b"
-=======
 crypto-js@^3.3.0:
   version "3.3.0"
   resolved "https://registry.npm.taobao.org/crypto-js/download/crypto-js-3.3.0.tgz?cache=0&sync_timestamp=1581509454262&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcrypto-js%2Fdownload%2Fcrypto-js-3.3.0.tgz#846dd1cce2f68aacfa156c8578f926a609b7976b"
->>>>>>> 3d00b428e82f15c0288d479620e334b116beb251
   integrity sha1-hG3RzOL2iqz6FWyFePkmpgm3l2s=
 
 css-color-names@0.0.4, css-color-names@^0.0.4:
@@ -7444,15 +7438,6 @@ simple-swizzle@^0.2.2:
   dependencies:
     is-arrayish "^0.3.1"
 
-<<<<<<< HEAD
-sip.js@0.15.10:
-  version "0.15.10"
-  resolved "https://registry.npm.taobao.org/sip.js/download/sip.js-0.15.10.tgz#ab3072efa9da888c97048ea311a341c7bb117928"
-  integrity sha1-qzBy76naiIyXBI6jEaNBx7sReSg=
-  dependencies:
-    crypto-js "^3.1.9-1"
-    events "^3.0.0"
-=======
 sip.js@^0.15.10:
   version "0.15.11"
   resolved "https://registry.npm.taobao.org/sip.js/download/sip.js-0.15.11.tgz#553151adc1cfd8e0985bed771a4534b7d263ed44"
@@ -7460,7 +7445,6 @@ sip.js@^0.15.10:
   dependencies:
     crypto-js "^3.3.0"
     events "^3.1.0"
->>>>>>> 3d00b428e82f15c0288d479620e334b116beb251
     tslib "^1.10.0"
 
 slash@^1.0.0:
