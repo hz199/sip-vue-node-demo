@@ -3,29 +3,33 @@ import SIP from 'sip.js'
 import { EventEmitter } from "./EventEmitter";
 
 class Sipphone {
-  sipServers = []
-  sipAccount = {
-    name: 'unkown user',
-    no: '',
-    pwd: ''
-  };
-  SipUA;
-  currentSession = null;
-  currentSessionParams = {
-    audio: true,
-    video: true
-  };
-  videoTrack = [];
-  callback = {};
-  mediaDom;
-  modifiersParams = { ptime: '20', capturerate: '24000', bitrate: '30000' };
-  EventEmitter = new EventEmitter()
-  on = this.EventEmitter.on
-  emit = this.EventEmitter.emit
+  // sipServers = []
+  // sipAccount = {
+  //   name: 'unkown user',
+  //   no: '',
+  //   pwd: ''
+  // };
+  
 
   constructor(account, server) {
     this.sipAccount = account
     this.sipServers = server
+
+    this.SipUA;
+    this.currentSession = null;
+    this.currentSessionParams = {
+      audio: true,
+      video: true
+    };
+    this.videoTrack = [];
+    this.callback = {};
+    this.mediaDom;
+    this.modifiersParams = { ptime: '20', capturerate: '24000', bitrate: '30000' };
+    this.EventEmitter = new EventEmitter()
+    this.on = this.EventEmitter.on
+    this.emit = this.EventEmitter.emit
+
+
     this.registerDefaultEvents()
   }
 
@@ -254,7 +258,7 @@ class Sipphone {
             // 获取track句柄，方便结束时关闭
             this.videoTrack = this.videoTrack.concat(stream.getTracks());
             (this.mediaDom.localVideo).srcObject = stream;
-            (this.mediaDom.localVideo).onloadedmetadata = (e) => {
+            (this.mediaDom.localVideo).onloadedmetadata = () => {
               (this.mediaDom.localVideo).play()
             }
           })
